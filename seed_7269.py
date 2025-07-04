@@ -1,19 +1,24 @@
-CACHE = {0: 1}
+MOD = 10 ** 9 - 7538
 
 
-def fast_power(val, p):
-    
+def solution(n):
+    memo = {0: 1}
+
+    def dp(x):
+        if x in memo:
+            return memo[x]
+        a_half = dp(x // 2)
+        a_third = dp(x // 3)
+        a_quarter = dp(x // 4)
+        if a_third == 0:
+            power = 1
+        else:
+            power = pow(a_half, a_third, MOD)
+        res = (power + 5 * a_quarter + x) % MOD
+        memo[x] = res
+        return res
+
+    return dp(n)
 
 
-def solution(n: int) -> int:
-    return (fast_power(CACHE[n // 2], CACHE[n // 3]) + 5 * CACHE[n // 4] + n) % (10 ** 9 - 7538)
-
-
-def _solution(n: int) -> int:
-    for i in range(1, n + 1):
-        CACHE[i] = solution(i)
-    return CACHE[n]
-
-
-print(fast_power(665498719, 352168713))
-print(_solution(10))
+print(solution(2000000))
